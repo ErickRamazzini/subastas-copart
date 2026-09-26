@@ -1,0 +1,51 @@
+:root {
+  --azul: #1e5bb8;
+  --azul-claro: #e8f0fc;
+  --amarillo: #ffc629;
+  --fondo: #f5f8fc;
+  --texto: #1f2937;
+}
+body { background: var(--fondo); color: var(--texto); }
+
+.barra { background: var(--azul); }
+.barra .nav-link, .barra .marca { color: #fff !important; }
+.barra .nav-link:hover { color: var(--amarillo) !important; }
+.marca { font-weight: 700; font-size: 1.4rem; }
+.marca i { color: var(--amarillo); }
+.navbar-toggler { border-color: #fff; }
+.navbar-toggler-icon { filter: invert(1); }
+
+.tarjeta {
+  background: #fff; border-radius: 14px; padding: 1.25rem;
+  box-shadow: 0 2px 12px rgba(30, 91, 184, .08);
+}
+.titulo-seccion { color: var(--azul); font-weight: 700; }
+
+.card-vehiculo {
+  background: #fff; border-radius: 14px; overflow: hidden; height: 100%;
+  box-shadow: 0 2px 12px rgba(30, 91, 184, .08); transition: transform .15s;
+  text-decoration: none; color: inherit; display: block;
+}
+.card-vehiculo:hover { transform: translateY(-4px); color: inherit; }
+.card-vehiculo img { width: 100%; height: 190px; object-fit: cover; background: var(--azul-claro); }
+.card-vehiculo .cuerpo { padding: 1rem; }
+.oferta { font-size: 1.3rem; font-weight: 700; color: var(--azul); }
+
+.dano { display: inline-block; padding: .2rem .6rem; border-radius: 20px; font-size: .8rem; font-weight: 600; }
+.dano-verde { background: #dcfce7; color: #166534; }
+.dano-amarillo { background: #fef9c3; color: #854d0e; }
+.dano-rojo { background: #fee2e2; color: #991b1b; }
+.punto { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 4px; }
+.punto-verde { background: #22c55e; } .punto-amarillo { background: #eab308; } .punto-rojo { background: #ef4444; }
+
+.reloj { font-family: monospace; font-weight: 700; font-size: 1.1rem; }
+.reloj-grande { font-size: 2rem; color: var(--azul); }
+
+.carousel-item img { height: 420px; object-fit: contain; background: var(--azul-claro); }
+.ficha td:first-child { color: #6b7280; width: 45%; }
+
+.estado-puja { font-size: 1.05rem; padding: .75rem 1rem; border-radius: 10px; }
+.btn-primary { background: var(--azul); border-color: var(--azul); }
+.btn-amarillo { background: var(--amarillo); color: #1f2937; font-weight: 700; }
+.btn-amarillo:hover { background: #f5b800; }
+.previa img { width: 90px; height: 70px; object-fit: cover; border-radius: 6px; margin: 3px; }

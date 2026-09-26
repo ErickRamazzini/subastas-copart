@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Perfil de cada usuario: solo él puede leerlo y escribirlo
+    match /usuarios/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    match /vehiculos/{id} {
+      // Inventario visible para todos (modo lectura para anónimos)
+      allow read: if true;
+
+      // Publicar: solo usuarios autenticados, sin ofertas iniciales
+      allow create: if request.auth != null
+        && request.resource.data.ownerId == request.auth.uid
+        && request.resource.data.ofertaActual == 0
+        && request.resource.data.totalPujas == 0
+        && request.resource.data.ganadorId == null
+        && request.resource.data.montoBase is int && request.resource.data.montoBase > 0
+        && request.resource.data.fechaCierre > request.resource.data.fechaInicio;
+
+      // Editar (dueño, sin tocar campos de la subasta) o PUJAR (validado en el servidor)
+      allow update: if request.auth != null && (edicionDelDueno() || pujaValida());
+
+      allow delete: if request.auth != null
+        && resource.data.ownerId == request.auth.uid
+        && resource.data.totalPujas == 0;
+
+      function edicionDelDueno() {
+        return resource.data.ownerId == request.auth.uid
+          && !request.resource.data.diff(resource.data).affectedKeys()
+               .hasAny(['ofertaActual', 'ganadorId', 'totalPujas', 'ownerId', 'creado']);
+      }
+
+      // Reglas de puja validadas en el servidor
+      function pujaValida() {
+        let nueva = request.resource.data.ofertaActual;
+        let actual = resource.data.ofertaActual;
+        return request.resource.data.diff(resource.data).affectedKeys()
+                 .hasOnly(['ofertaActual', 'ganadorId', 'totalPujas'])
+          && resource.data.ownerId != request.auth.uid           // el dueño no puja
+          && request.resource.data.ganadorId == request.auth.uid
+          && request.resource.data.totalPujas == resource.data.totalPujas + 1
+          && request.time >= resource.data.fechaInicio           // respeta inicio
+          && request.time < resource.data.fechaCierre            // respeta cierre
+          && nueva is int
+          && nueva >= resource.data.montoBase                    // no menor al monto base
+          && nueva > actual                                      // mayor a la actual
+          && (actual == 0 || nueva * 10 >= actual * 11);         // incremento mínimo 10%
+      }
+
+      // Fotos: todos las ven, solo el dueño las sube
+      match /fotos/{fotoId} {
+        allow read: if true;
+        allow write: if request.auth != null
+          && get(/databases/$(database)/documents/vehiculos/$(id)).data.ownerId == request.auth.uid;
+      }
+
+      // Registro privado de participación: cada usuario solo ve el suyo (postores anónimos)
+      match /postores/{uid} {
+        allow read, write: if request.auth != null && request.auth.uid == uid;
+      }
+    }
+  }
+}
