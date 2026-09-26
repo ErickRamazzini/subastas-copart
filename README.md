@@ -1,14 +1,14 @@
 # SubastasGT – Plataforma de Subastas de Vehículos en Tiempo Real (Caso Copart)
 
 ## 🌐 Sitio publicado
-**https://erickramazzini.github.io/subastas-copart/**
+https://erickramazzini.github.io/subastas-copart/
 
 ## 👤 Usuarios de prueba
 | # | Correo | Contraseña |
 |---|--------|------------|
-| 1 | CORREO_1 | CONTRASEÑA_1 |
-| 2 | CORREO_2 | CONTRASEÑA_2 |
-| 3 | CORREO_3 | CONTRASEÑA_3 |
+| 1 | vendedor@subastas.com | Vendedor#2026 |
+| 2 | comprador1@subastas.com | Comprador1#2026 |
+| 3 | comprador2@subastas.com | Comprador2#2026 |
 
 ## 🧱 Arquitectura
 - **Frontend:** SPA en JavaScript (módulos ES, enrutador por hash), Bootstrap 5, publicada en GitHub Pages.
